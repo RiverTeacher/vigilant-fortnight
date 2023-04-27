@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/Toard.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title><%= channel.author.name %></title>
+  </head>
+  <body>
+    <span class="fixed border bottom left"
+      ><a href="/"><b>ytmous</b></a> - Anonymous Youtube Proxy</span
+    >
+    <a class="fixed border bottom right" id="sbtn" href="#sbox">Search</a>
+    <div id="sbox" class="border fixed bottom right popup">
+      <form action="/s" method="GET">
+        <input
+          name="q"
+          class="border"
+          type="text"
+          placeholder="Search video...."
+        />
+      </form>
+    </div>
+
+    <!-- <img lazy src="<%- (new URL(channel.bestThumbnail.url)).pathname %>" id="thumbnail"/> -->
+    <div id="relatedVideos">
+      <div class="rVideo">
+        <a href="/c/<%= channel.author.channelID %>"><% if (channel.author.bestAvatar) { %><img lazy src="/yt3<%- (new URL(channel.author.bestAvatar.url)).pathname %>" style="padding: 25px; width: 90px;"/><% } %></a>
+        <div class="rVideoInfo">
+          <small><%= channel.estimatedItemCount %> videos</small><br>
+          <h2><%= channel.author.name %></h2>
+          <small><%= channel.lastUpdated %></small><br>
+          <pre><%= channel.description %></pre>
+        </div>
+      </div>
+
+      <% channel.items.forEach(video => { %>
+      <div class="rVideo">
+        <a href="/w/<%= video.id %>"
+          ><img lazy src="/vi/<%= video.id %>/mqdefault.jpg"
+        /></a>
+        <div class="rVideoInfo">
+          <h4><a href="/w/<%= video.id %>"><%= video.title %></a></h4>
+          <span
+            >
+            <% if (channel.author.bestAvatar) { %>
+            <img lazy
+              src="/yt3/<%- (new URL(channel.author.bestAvatar.url)).pathname %>"
+              style="border-radius: 50%; width: 20px; height: 20px"
+            /><% } %>
+            <%= video.author.name %></span
+          ><br>
+          <small>Duration: <b><%= video.isLive ? "LIVE" : video.duration %></b></small>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+    <% if (page > 1) { %>
+    <a class="fixed border left" style="bottom: 30px" href="/c/<%= channel.id %>?p=<%= page-1 %>"
+      >Previous Page</a
+    >
+    <% } %>
+    <a class="fixed border right" style="bottom: 30px" href="/c/<%= channel.id %>?p=<%= page+1 %>"
+      >Next Page</a
+    >
+    <style>
+      body {
+        display: block;
+      }
+    </style>
+  </body>
+</html>

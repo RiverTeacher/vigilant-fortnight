@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/Toard.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title><%= comments.header.count.text %> for <%= id %></title>
+  </head>
+  <body>
+    <div>
+      <% comments.contents.forEach(CommentThread => { %>
+      <div style="display: flex;">
+        <img lazy src="/yt3<%= (new URL(CommentThread.comment.author.thumbnails[0].url)).pathname %>"/>
+        <div class="rVideoInfo">
+          <h4><a href="/c/<%= CommentThread.comment.author.id %>"><%= CommentThread.comment.author.name %></a></h4>
+          <small><%= CommentThread.comment.published.text %><%= (CommentThread.comment.author.is_verified || CommentThread.comment.author.is_verified_artist) ? " | Verified user" : "" %><%= CommentThread.comment.is_member ? " | Member" : "" %><%= CommentThread.comment.author_is_channel_owner ? " | Owner" : "" %><%= CommentThread.comment.is_pinned ? " | Pinned" : "" %></small>
+          <pre><%= CommentThread.comment.content.text %></pre>
+          <small><%= CommentThread.comment.vote_count %> likes <%= CommentThread.comment.is_hearted ? "| Hearted" : "" %></small><br>
+          <% if (CommentThread.has_replies) { %>
+          <small><a href="#">View <%= CommentThread.comment.reply_count %> replies</a></small>
+          <% } %>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+    <style>
+      body {
+        display: block;
+      }
+
+      img {
+        max-width: 50px;
+        width: 50px;
+        height: 50px;
+        padding: 10px;
+      }
+
+      .rVideoInfo {
+        width: 100%;
+        max-width: 100%;
+      }
+    </style>
+  </body>
+</html>

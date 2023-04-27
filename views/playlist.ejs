@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/Toard.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title><%= playlist.title %></title>
+  </head>
+  <body>
+    <span class="fixed border bottom left"
+      ><a href="/"><b>ytmous</b></a> - Anonymous Youtube Proxy</span
+    >
+    <a class="fixed border bottom right" id="sbtn" href="#sbox">Search</a>
+    <div id="sbox" class="border fixed bottom right popup">
+      <form action="/s" method="GET">
+        <input
+          name="q"
+          class="border"
+          type="text"
+          placeholder="Search video...."
+        />
+      </form>
+    </div>
+
+    <img lazy src="/vi/<%= playlist.items[0].id %>/hqdefault.jpg" id="thumbnail"/>
+    <div style="padding: 14px;">
+      <small><%= playlist.estimatedItemCount %> videos</small>
+      <h2><%= playlist.title %></h2>
+      <span><% if (playlist.author.bestAvatar) { %><img lazy src="/yt3<%- (new URL(playlist.author.bestAvatar.url)).pathname %>" style="border-radius: 50%; width: 17px; height: 17px" /><% } %><a href="/c/<%= playlist.author.channelID %>"><%= playlist.author.name %></a></span><br>
+      <small><%= playlist.lastUpdated %></small><br>
+      <pre><%= playlist.description %></pre>
+    </div>
+    <div id="relatedVideos">
+      <% playlist.items.forEach(video => { %>
+      <div class="rVideo">
+        <a href="/w/<%= video.id %>"
+          ><img lazy src="/vi/<%= video.id %>/mqdefault.jpg"
+        /></a>
+        <div class="rVideoInfo">
+          <h4><a href="/w/<%= video.id %>"><%= video.title %></a></h4>
+          <span><a href="/c/<%= video.author.channelID %>"> <%= video.author.name %></a></span><br>
+          <small>Duration: <b><%= video.isLive ? "LIVE" : video.duration %></b></small>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+    <% if (page > 1) { %>
+    <a class="fixed border left" style="bottom: 30px" href="/p/<%= playlist.id %>?p=<%= page-1 %>"
+      >Previous Page</a
+    >
+    <% } %>
+    <a class="fixed border right" style="bottom: 30px" href="/p/<%= playlist.id %>?p=<%= page+1 %>"
+      >Next Page</a
+    >
+    <style>
+      body {
+        display: block;
+      }
+    </style>
+  </body>
+</html>
